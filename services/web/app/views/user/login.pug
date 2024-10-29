@@ -33,10 +33,33 @@ block content
 									placeholder='********',
 								)
 							.actions
-								button.btn-primary.btn(
+								button.btn-primary.btn-block.btn(
 									type='submit',
 									data-ol-disabled-inflight
 								)
 									span(data-ol-inflight="idle") #{translate("login")}
 									span(hidden data-ol-inflight="pending") #{translate("logging_in")}…
-								a.pull-right(href='/user/password/reset') #{translate("forgot_your_password")}?
+
+							if settings.samlBypass.enabled
+								p.login-register-hr-text-container.text-center
+									span.login-register-hr-text.text-uppercase #{translate("or")}
+
+								.actions
+									p.login-register-text.text-center #{translate("work_or_university_sso")}
+
+									+customFormMessage('sso-login-failure', 'danger')
+										| !{translate('saml_login_failure')}
+									script(nonce=scriptNonce).
+										const searchParams = new URLSearchParams(window.location.search)
+										if (searchParams.has('sso-login-failure')) {
+											document.querySelector("div[data-ol-custom-form-message=sso-login-failure]").hidden = false;
+										}
+
+									a.website-redesign.btn-block.login-btn.btn(href='/sso-login')
+										img.login-btn-icon(src=buildImgPath('/other-brands/logo_institution.svg') aria-hidden="true")
+										| #{translate("login_with_service", {'service': settings.samlBypass.name})}
+
+							p.login-register-hr-text-container
+
+							p.login-register-text.text-center
+								a(href='/user/password/reset') #{translate("forgot_your_password")}?
