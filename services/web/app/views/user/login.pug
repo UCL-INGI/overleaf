@@ -44,6 +44,27 @@ block content
 										span(data-ol-inflight="idle") #{translate("login")}
 										span(hidden data-ol-inflight="pending") #{translate("logging_in")}…
 									a.float-end(href='/user/password/reset') #{translate("forgot_your_password")}?
+		
+								if settings.samlBypass.enabled
+									p.login-register-hr-text-container.text-center
+										span.login-register-hr-text.text-uppercase #{translate("or")}
+
+									.actions
+										p.login-register-text.text-center #{translate("work_or_university_sso")}
+
+										+customFormMessage('sso-login-failure', 'danger')
+											| !{translate('saml_login_failure')}
+										script(nonce=scriptNonce).
+											const searchParams = new URLSearchParams(window.location.search)
+											if (searchParams.has('sso-login-failure')) {
+												document.querySelector("div[data-ol-custom-form-message=sso-login-failure]").hidden = false;
+											}
+
+										a.w-100.d-inline-grid.btn-social.btn-secondary.btn(href='/sso-login')
+											span.button-content
+												img.btn-social-icon(src=buildImgPath('/other-brands/logo_institution.svg') aria-hidden="true")
+												| #{translate("login_with_service", {'service': settings.samlBypass.name})}
+
 								if login_support_text
 									hr
 									p.text-center !{login_support_text}	
