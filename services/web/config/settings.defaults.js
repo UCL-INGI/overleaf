@@ -970,6 +970,7 @@ module.exports = {
     'launchpad',
     'server-ce-scripts',
     'user-activate',
+    'saml-bypass',
   ],
   viewIncludes: {},
 
@@ -994,6 +995,21 @@ module.exports = {
 
   managedUsers: {
     enabled: false,
+  },
+
+  samlBypass: {
+    enabled: process.env.OVERLEAF_SAML_ENABLED === 'true',
+    name: process.env.OVERLEAF_SAML_IDENTITY_SERVICE_NAME || 'SAML',
+    callbackUrl: process.env.OVERLEAF_SAML_CALLBACK_URL || siteUrl + '/sso-login/callback',
+    issuer: process.env.OVERLEAF_SAML_ISSUER || siteUrl,
+    identifierFormat: process.env.OVERLEAF_SAML_IDENTIFIER_FORMAT || 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+    entryPoint: process.env.OVERLEAF_SAML_ENTRYPOINT,
+    signingCert: process.env.OVERLEAF_SAML_SP_CERT,
+    privateKey: process.env.OVERLEAF_SAML_SP_KEY,
+    cert: process.env.OVERLEAF_SAML_IDP_CERT,
+    emailField: process.env.OVERLEAF_SAML_EMAIL_FIELD || 'email',
+    firstNameField: process.env.OVERLEAF_SAML_FIRST_NAME_FIELD || 'firstName',
+    lastNameField: process.env.OVERLEAF_SAML_LAST_NAME_FIELD || 'lastName',
   },
 }
 
