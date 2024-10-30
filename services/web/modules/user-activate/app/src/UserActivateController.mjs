@@ -1,8 +1,11 @@
 import Path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import settings from '@overleaf/settings'
 import UserGetter from '../../../../app/src/Features/User/UserGetter.mjs'
 import UserRegistrationHandler from '../../../../app/src/Features/User/UserRegistrationHandler.mjs'
 import ErrorController from '../../../../app/src/Features/Errors/ErrorController.mjs'
+import SessionManager from "../../../../app/src/Features/Authentication/SessionManager.mjs";
+import AuthorizationMiddleware from '../../../../app/src/Features/Authorization/AuthorizationMiddleware.mjs'
 import { expressify } from '@overleaf/promise-utils'
 
 const __dirname = Path.dirname(fileURLToPath(import.meta.url))
@@ -62,8 +65,26 @@ async function activateAccountPage(req, res, next) {
   })
 }
 
+async function ensureEmailDomain(req, res, next) {
+  if (settings.userActivateAllowedDomain) {
+      const userId = SessionManager.getLoggedInUserId(req.session)
+      const reversedHostname = settings.userActivateAllowedDomain.trim().split('').reverse().join('')
+      const query = {
+          _id: userId,
+          emails: {$exists: true},
+          'emails.reversedHostname': reversedHostname,
+      }
+      const user = await UserGetter.promises.getUser(query)
+      if (user) {
+          return next()
+      }
+  }
+  return AuthorizationMiddleware.ensureUserIsSiteAdmin(req, res, next)
+}
+
 export default {
   registerNewUser,
   register: expressify(register),
   activateAccountPage: expressify(activateAccountPage),
+  ensureEmailDomain: expressify(ensureEmailDomain)
 }
