@@ -52,10 +52,7 @@ const Features = {
       case 'homepage':
         return Boolean(Settings.enableHomepage)
       case 'registration-page':
-        return (
-          !Features.externalAuthenticationSystemUsed() ||
-          Boolean(Settings.overleaf)
-        )
+        return false
       case 'registration':
         return Boolean(Settings.overleaf)
       case 'chat':

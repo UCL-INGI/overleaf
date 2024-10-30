@@ -1011,6 +1011,8 @@ module.exports = {
     firstNameField: process.env.OVERLEAF_SAML_FIRST_NAME_FIELD || 'firstName',
     lastNameField: process.env.OVERLEAF_SAML_LAST_NAME_FIELD || 'lastName',
   },
+
+  userActivateAllowedDomain: process.env.OVERLEAF_USER_ACTIVATE_ALLOWED_DOMAIN,
 }
 
 module.exports.mergeWith = function (overrides) {
