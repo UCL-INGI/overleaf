@@ -971,6 +971,7 @@ module.exports = {
     'server-ce-scripts',
     'user-activate',
     'saml-bypass',
+    'track-changes',
   ],
   viewIncludes: {},
 
