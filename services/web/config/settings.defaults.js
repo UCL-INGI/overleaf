@@ -1006,10 +1006,20 @@ module.exports = {
     referenceLinkingWidgets: [],
     importProjectFromGithubModalWrapper: [],
     importProjectFromGithubMenu: [],
-    editorLeftMenuSync: [],
+    editorLeftMenuSync: [
+      Path.resolve(
+        __dirname,
+        '../modules/git-bridge/frontend/js/card/components/git-modal.tsx'
+      ),
+    ],
     editorLeftMenuManageTemplate: [],
     menubarExtraComponents: [],
-    oauth2Server: [],
+    oauth2Server: [
+      Path.resolve(
+        __dirname,
+        '../modules/git-bridge/frontend/js/widget/components/git-integration-widget.tsx'
+      )
+    ],
     managedGroupSubscriptionEnrollmentNotification: [],
     managedGroupEnrollmentInvite: [],
     ssoCertificateInfo: [],
@@ -1046,7 +1056,12 @@ module.exports = {
         '../modules/full-project-search/frontend/js/components/full-project-search.tsx'
       ),
     ],
-    integrationPanelComponents: [],
+    integrationPanelComponents: [
+      Path.resolve(
+        __dirname,
+        '../modules/git-bridge/frontend/js/card/components/git-integration-card.tsx'
+      ),
+    ],
     referenceSearchSetting: [],
     errorLogsComponents: [],
     referenceIndices: [],
@@ -1060,6 +1075,7 @@ module.exports = {
     'server-ce-scripts',
     'user-activate',
     'saml-bypass',
+    'git-bridge',
   ],
   viewIncludes: {},
 
