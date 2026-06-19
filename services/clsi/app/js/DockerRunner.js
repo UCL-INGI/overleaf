@@ -66,13 +66,6 @@ const DockerRunner = {
     }
 
     const volumes = { [directory]: '/compile' }
-    if (
-      compileGroup === 'synctex' ||
-      compileGroup === 'synctex-output' ||
-      compileGroup === 'wordcount'
-    ) {
-      volumes[directory] += ':ro'
-    }
 
     const options = DockerRunner._getContainerOptions(
       command,
@@ -217,8 +210,14 @@ const DockerRunner = {
     for (const hostVol in volumes) {
       const dockerVol = volumes[hostVol]
       dockerVolumes[dockerVol] = {}
-
-      if (volumes[hostVol].slice(-3).indexOf(':r') === -1) {
+      if (
+        compileGroup === 'synctex' ||
+        compileGroup === 'synctex-output' ||
+        compileGroup === 'wordcount'
+      ) {
+        volumes[hostVol] = `${dockerVol}:ro`
+      }
+      else {
         volumes[hostVol] = `${dockerVol}:rw`
       }
     }
